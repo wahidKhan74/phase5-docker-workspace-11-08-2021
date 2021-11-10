@@ -1,0 +1,41 @@
+step1 : create a master node  -> Ec2  -> ubuntu 20.0.4
+      -> 1) install docker   -> sudo docker -v
+      -> 2) install kubernatese -> kubeadm version
+      -> 3) disabling the swap memory
+          -> sudo swapoff -a
+          -> sudo sed -i '/ swap / s/^/#/' /etc/fstab
+      -> 4) Add Kubernetes cgroup
+          -> sudo vim  /etc/docker/daemon.json
+                    {
+                         "exec-opts": ["native.cgroupdriver=systemd"]
+                    }
+                    sudo systemctl daemon-reload
+                    sudo systemctl restart docker
+                    sudo systemctl restart kubelet
+                    sudo docker info |grep -i cgroup
+      -> 5) Assign Unique Hostname
+            -> sudo hostnamectl set-hostname master-node
+
+      -> start a kubernatese master
+
+
+step1 : create a worker node  -> Ec2  -> ubuntu 20.0.4
+      -> 1) install docker 
+      -> 2) install kubernatese
+      -> 3) disabling the swap memory
+          -> sudo swapoff -a
+          -> sudo sed -i '/ swap / s/^/#/' /etc/fstab
+      -> 4) Add Kubernetes cgroup
+         -> sudo vim  /etc/docker/daemon.json
+                    {
+                         "exec-opts": ["native.cgroupdriver=systemd"]
+                    }
+                    sudo systemctl daemon-reload
+                    sudo systemctl restart docker
+                    sudo systemctl restart kubelet
+                    sudo docker info |grep -i cgroup
+    -> 5) Assign Unique Hostname
+            -> sudo hostnamectl set-hostname worker01
+      -> join a kubernatese worker
+
+----------------------------------------
