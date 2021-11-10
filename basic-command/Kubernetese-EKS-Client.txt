@@ -1,0 +1,51 @@
+# Setup EKS client :
+------------------
+●	Download the Amazon EKS-vended kubectl binary from Amazon S3
+Linux: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/kubectl
+
+> wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/kubectl
+> chmod +x kubectl	
+> ./kubectl
+
+# ●	Configure kubectl in PATH variable to call kubectl command globally
+> mkdir bin	
+> cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+> kubectl version
+> kubectl version --short --client
+
+
+●	Configure AWS CLI and aws-iam-authenticator
+. Download the Amazon EKS-vended aws-iam-authenticator binary from Amazon S3
+Linux: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
+
+> wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
+> chmod +x ./aws-iam-authenticator
+> cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$HOME/bin:$PATH
+> aws-iam-authenticator help
+
+●	Install AWS CLI using the sequence of commands
+    > sudo apt install python3-pip
+    > pip3 --version
+    > pip install awscli
+> or // 
+    > sudo apt install awscli
+    > aws --version
+
+> aws configure
+   > add acceskey
+   > add secreate key
+   > add region
+   > output form : json
+
+●	Update the local kubeconfig to configure locally installed kubectl with EKS configurations.
+> aws eks --region us-east-1 update-kubeconfig --name KuberneteseCluster
+> kubectl get svc
+
+
+●	Install EKS CTL command line to create an EKS cluster.
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+●	Create an EKS Cluster using the command below:
+eksctl create cluster --name=KuberneteseCluster --nodes=2 --region=us-east-1

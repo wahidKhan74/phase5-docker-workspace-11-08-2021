@@ -16,8 +16,19 @@ step1 : create a master node  -> Ec2  -> ubuntu 20.0.4
       -> 5) Assign Unique Hostname
             -> sudo hostnamectl set-hostname master-node
 
-      -> start a kubernatese master
-
+      -> start a kubernatese master (Initialize Kubernetes on Master Node)
+            -> sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+            -> add kubernatese master node config
+                mkdir -p $HOME/.kube
+                sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+                sudo chown $(id -u):$(id -g) $HOME/.kube/config
+            -> apply a pod newtwork to the cluster
+                > export kubever=$(kubectl version | base64 | tr -d '\n')
+                > kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+            -> Verify that everything is running and communicating
+                > kubectl get pods --all-namespaces
+            -> list nodes 
+               sudo kubectl get nodes
 
 step1 : create a worker node  -> Ec2  -> ubuntu 20.0.4
       -> 1) install docker 
@@ -37,5 +48,5 @@ step1 : create a worker node  -> Ec2  -> ubuntu 20.0.4
     -> 5) Assign Unique Hostname
             -> sudo hostnamectl set-hostname worker01
       -> join a kubernatese worker
-
+            -> sudo kubeadm join 172.31.22.76:6443 --token a5hd8z.hcp1t8lfngenz81i --discovery-token-ca-cert-hash sha256:f80230e369a1871716fdc7ab4221d1305f0e8169f3e2072e0d27a0a214d593fc
 ----------------------------------------
