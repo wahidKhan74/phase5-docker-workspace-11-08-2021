@@ -16,3 +16,6 @@ sudo docker volume ls
 
 # create / run a container
 > sudo docker run -it ubuntu /bin/bash
+
+# ssh / login a container
+> sudo docker exec -it <container-name> /bin/bash
